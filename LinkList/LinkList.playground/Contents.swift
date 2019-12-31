@@ -5,6 +5,8 @@ func example(of example: String, implementation: () -> ()) {
     implementation()
 }
 
+// MARK - Node
+
 public class Node<Value> {
     
     public var value: Value
@@ -39,3 +41,28 @@ example(of: "creating and linking nodes") {
     print(node1)
 }
 
+// MARK - Linked List
+
+public struct LinkedList<Value> {
+    
+    public var head: Node<Value>?
+    
+    public var tail: Node<Value>?
+    
+    public init() {}
+    
+    public var isEmpty: Bool {
+        return head == nil
+    }
+}
+
+extension LinkedList: CustomStringConvertible {
+    
+    public var description: String {
+        guard let head = head else {
+            return "Empty List"
+        }
+        
+        return String(describing: head)
+    }
+}
