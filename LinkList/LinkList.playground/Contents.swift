@@ -72,6 +72,27 @@ public struct LinkedList<Value> {
         
         tail = tail?.next
     }
+    
+    public func node(at index: Int) -> Node<Value>? {
+        var currentNode = head
+        var currentIndex = 0
+        
+        while currentNode != nil && currentIndex < index {
+            currentNode = currentNode?.next
+            currentIndex += 1
+        }
+        
+        return currentNode
+    }
+    
+    public mutating func insert(_ value: Value, after node: Node<Value>) {
+        guard tail !== node else {
+            append(value)
+            return
+        }
+        
+        node.next = Node(value: value, next: node.next)
+    }
 }
 
 extension LinkedList: CustomStringConvertible {
@@ -101,4 +122,20 @@ example(of: "append") {
     list.append(5)
     
     print(list)
+}
+
+example(of: "insert") {
+    var list = LinkedList<Int>()
+    list.push(3)
+    list.push(2)
+    list.push(1)
+    
+    print("Before inserting \(list)")
+    let middleNode = list.node(at: 1)!
+    
+    for _ in 1...2 {
+        list.insert(0, after: middleNode)
+    }
+    
+    print("After inserting \(list)")
 }
