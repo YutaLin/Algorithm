@@ -54,6 +54,13 @@ public struct LinkedList<Value> {
     public var isEmpty: Bool {
         return head == nil
     }
+    
+    mutating func push(_ value: Value) {
+        head = Node(value: value, next: head)
+        if tail == nil {
+            tail = head
+        }
+    }
 }
 
 extension LinkedList: CustomStringConvertible {
@@ -65,4 +72,13 @@ extension LinkedList: CustomStringConvertible {
         
         return String(describing: head)
     }
+}
+
+example(of: "push") {
+    var list = LinkedList<Int>()
+    list.push(3)
+    list.push(4)
+    list.push(5)
+    
+    print(list)
 }
