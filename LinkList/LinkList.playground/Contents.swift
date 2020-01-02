@@ -55,11 +55,22 @@ public struct LinkedList<Value> {
         return head == nil
     }
     
-    mutating func push(_ value: Value) {
+    public mutating func push(_ value: Value) {
         head = Node(value: value, next: head)
         if tail == nil {
             tail = head
         }
+    }
+    
+    public mutating func append(_ value: Value) {
+        guard !isEmpty else {
+            push(value)
+            return
+        }
+        
+        tail?.next = Node(value: value)
+        
+        tail = tail?.next
     }
 }
 
@@ -79,6 +90,15 @@ example(of: "push") {
     list.push(3)
     list.push(4)
     list.push(5)
+    
+    print(list)
+}
+
+example(of: "append") {
+    var list = LinkedList<Int>()
+    list.append(3)
+    list.append(4)
+    list.append(5)
     
     print(list)
 }
