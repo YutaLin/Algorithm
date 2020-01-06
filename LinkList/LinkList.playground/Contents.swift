@@ -223,3 +223,63 @@ example(of: "removing a node after a particular node") {
   print("After removing at index \(index): \(list)")
   print("Removed value: " + String(describing: removedValue))
 }
+
+extension LinkedList: Collection {
+
+    public struct Index: Comparable {
+
+        public var node: Node<Value>?
+
+        static public func ==(lhs: Index, rhs: Index) -> Bool {
+            switch (lhs.node, rhs.node) {
+            case let (left?, right?):
+                return left.next === right.next
+            case (nil, nil):
+                return true
+            default:
+                return false
+            }
+        }
+
+        static public func <(lhs: Index, rhs: Index) -> Bool {
+            guard lhs != rhs else {
+                return false
+            }
+
+            let nodes = sequence(first: lhs.node) { $0?.next }
+            return nodes.contains { $0 === rhs.node }
+        }
+    }
+
+    public var startIndex: Index {
+      return Index(node: head)
+    }
+    
+    public var endIndex: Index {
+      return Index(node: tail?.next)
+    }
+    
+    public func index(after i: Index) -> Index {
+      return Index(node: i.node?.next)
+    }
+    
+    public subscript(position: Index) -> Value {
+      return position.node!.value
+    }
+}
+
+example(of: "using collection") {
+    var list = LinkedList<Int>()
+    
+    for i in 0...9 {
+        list.append(i)
+    }
+    
+    print("List: \(list)")
+    print("First element: \(list[list.startIndex])")
+    print("Array containing first 3 elements: \(Array(list.prefix(3)))")
+    print("Array containing last 3 elements: \(Array(list.suffix(3)))")
+    
+    let sum = list.reduce(0, +)
+    print("sum of all values: \(sum)")
+}
